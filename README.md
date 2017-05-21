@@ -11,7 +11,7 @@ I also use media querys to avoid the CSS blocking and async to avoid JavaScript 
 Ih the main.js I edit the function changePizzaSizes() following the instructions given
 in the optmization classes. I changed updatePositions() function changing the variable
 to modify the phase of the function that determines the position of the pizzas in the
-background.
+background. I also change the max number of pizzas in the background.
 
 ## Instalation
 You must a have a browser to open the pages. We recommend Chrome Browser.

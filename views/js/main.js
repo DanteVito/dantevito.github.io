@@ -488,17 +488,19 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 // Moves the sliding background pizzas based on scroll position
-// I changed this function removing the operation  on "document.body.scrollTop"
+// I originaly changed this function removing the operation  on "document.body.scrollTop"
 // because this is a expensive operation. I use the frame variable as a parameter to
 // modify the phase of the sin function and change the position of pizzas in the background.
+// But this modification is not allowed, so I follow the sugestion of cache the scrollTop before
+// the loop.
 
   function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-
+  cachedScroolTop = document.body.scrollTop;
   var items = document.querySelectorAll('.mover');
   for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin(frame/10);
+    var phase = Math.sin((cachedScroolTop/1250) +(i % 5));
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
@@ -519,7 +521,12 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  //I follow the sugestion given in the review and change the
+  // max number of pizzas in the background using the heigh
+  // of the screen.
+  var rows = screen.height / s;
+  var max = rows * cols;
+  for (var i = 0; i < max; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
